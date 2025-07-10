@@ -15,7 +15,7 @@ const is_live = false; // Set to true for live production
 
 // API and Frontend URLs
 const API_URL = "https://clinic-server-rho.vercel.app"; // Fallback for local dev
-const FRONTEND_URL = 'https://clinic-indol.vercel.app';
+const FRONTEND_URL = 'https://clinic-six-sand.vercel.app';
 
 console.log(`Backend API URL configured as: ${API_URL}`);
 console.log(`Frontend URL configured as: ${FRONTEND_URL}`);
