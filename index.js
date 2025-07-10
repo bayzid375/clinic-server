@@ -40,10 +40,6 @@ app.post('/api/pay', async (req, res) => {
       appointment_time, patient_name, patient_phone, patient_email, patient_age,health_issues,payment_status,appointment_status,fee
     } = req.body;
 
-    if (!user_id) {
-      return res.status(400).json({ error: "user_id is required." });
-    }
-
     const data = {
       store_id,
       store_passwd,
@@ -55,8 +51,8 @@ app.post('/api/pay', async (req, res) => {
       cancel_url: `${API_URL}/payment-cancel`,
       ipn_url: `${API_URL}/ipn`,
       shipping_method: 'No',
-      product_name:service_id,
-      product_category: service_id,
+      product_name:'Apoinment',
+      product_category: 'Clinic',
       product_profile: 'non-physical-goods',
       cus_name:patient_name,
       cus_email: patient_email,
@@ -65,8 +61,8 @@ app.post('/api/pay', async (req, res) => {
       cus_postcode: 'N/A',
       cus_country: 'Bangladesh',
       cus_phone: patient_phone,
-      ship_name: provider_id,
-      ship_add1: provider_id,
+      ship_name: doctor_id,
+      ship_add1: doctor_id,
       ship_city: 'N/A',
       ship_postcode: 'N/A',
       ship_country: 'Bangladesh',
