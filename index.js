@@ -125,7 +125,7 @@ app.post('/payment-success/:patient_id/:department/:doctor_id/:appointment_date/
         payment_method: paymentInfo.payment_method,
         payment_status: 'completed',
         appointment_status: appointment_status,
-        fee: fee,
+        fee: parseFloat(fee),
     };
 
 
