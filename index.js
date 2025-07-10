@@ -46,7 +46,7 @@ app.post('/api/pay', async (req, res) => {
       tran_id: transactionId,
       total_amount: fee,
       currency:'BDT',
-      success_url: `${API_URL}/payment-success/${patient_id}/${department}/${doctor_id}/${appointment_date}/${encodeURIComponent(appointment_time)}/${patient_name}/${patient_phone}/${patient_email}/${patient_age}/${encodeURIComponent(health_issues)}/${appointment_status}/${fee}/${payment_status}`,
+      success_url: `${API_URL}/payment-success/${encodeURIComponent(patient_id)}/${encodeURIComponent(department)}/${encodeURIComponent(doctor_id)}/${encodeURIComponent(appointment_date)}/${encodeURIComponent(appointment_time)}/${encodeURIComponent(patient_name)}/${encodeURIComponent(patient_phone)}/${encodeURIComponent(patient_email)}/${encodeURIComponent(patient_age)}/${encodeURIComponent(health_issues)}/${encodeURIComponent(appointment_status)}/${encodeURIComponent(fee)}/${encodeURIComponent(payment_status)}`,
       fail_url: `${API_URL}/payment-fail`,
       cancel_url: `${API_URL}/payment-cancel`,
       ipn_url: `${API_URL}/ipn`,
