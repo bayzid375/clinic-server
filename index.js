@@ -13,7 +13,7 @@ const store_id = process.env.STORE_ID;
 const store_passwd = process.env.STORE_PASSWD;
 const is_live = false;
 
-const API_URL = 'https://home-fix-server-nine.vercel.app';
+const API_URL = 'https://clinic-server-rho.vercel.app';
 const FRONTEND_URL ="https://clinic-indol.vercel.app";
 console.log(FRONTEND_URL);
 
@@ -36,8 +36,8 @@ app.post('/api/pay', async (req, res) => {
   try {
     const transactionId = uuidv4();
     const {
-      service_id, user_id, provider_id, date,
-      time, address, notes, status, total_amount,payment_status
+      patient_id, department, doctor_id, appointment_date,
+      appointment_time, patient_name, patient_phone, patient_email, patient_age,health_issues,payment_status,appointment_status,fee
     } = req.body;
 
     if (!user_id) {
@@ -48,9 +48,9 @@ app.post('/api/pay', async (req, res) => {
       store_id,
       store_passwd,
       tran_id: transactionId,
-      total_amount: total_amount,
+      total_amount: fee,
       currency:'BDT',
-      success_url: `${API_URL}/payment-success/${service_id}/${user_id}/${provider_id}/${date}/${time}/${encodeURIComponent(address)}/${encodeURIComponent(notes)}/${status}/${total_amount}/${payment_status}`,
+      success_url: `${API_URL}/payment-success/${patient_id}/${department}/${doctor_id}/${appointment_date}/${appointment_time}/${patient_name}/${patient_phone}/${patient_email}/${patient_age}/${encodeURIComponent(health_issues)}/${appointment_status}/${fee}/${payment_status}`,
       fail_url: `${API_URL}/payment-fail`,
       cancel_url: `${API_URL}/payment-cancel`,
       ipn_url: `${API_URL}/ipn`,
@@ -58,13 +58,13 @@ app.post('/api/pay', async (req, res) => {
       product_name:service_id,
       product_category: service_id,
       product_profile: 'non-physical-goods',
-      cus_name:user_id,
-      cus_email: user_id,
+      cus_name:patient_name,
+      cus_email: patient_email,
       cus_add1: address,
       cus_city: 'N/A',
       cus_postcode: 'N/A',
       cus_country: 'Bangladesh',
-      cus_phone: '+8801706846444',
+      cus_phone: patient_phone,
       ship_name: provider_id,
       ship_add1: provider_id,
       ship_city: 'N/A',
@@ -87,19 +87,22 @@ app.post('/api/pay', async (req, res) => {
   }
 });
 
-app.post('/payment-success/:serviceId/:userID/:providerId/:date/:time/:address/:notes/:status/:total_amount/:payment_status', async (req, res) => {
+app.post('/payment-success/:patient_id/:department/:doctor_id/:appointment_date/:appointment_time/:patient_name/:patient_phone/:patient_email/:patient_age/:health_issues/:appointment_status/:fee/:payment_status', async (req, res) => {
   try {
     const paymentInfo = req.body;
     const {
-        serviceId,
-        userID,
-        providerId,
-        date,
-        time,
-        address,
-        notes,
-        status,
-        total_amount,
+        patient_id,
+        department,
+        doctor_id,
+        appointment_date,
+        appointment_time,
+        patient_name,
+        patient_phone,
+        patient_email,
+        patient_age,
+        health_issues,
+        appointment_status,
+        fee,
         payment_status
     } = req.params;
 
@@ -114,23 +117,26 @@ app.post('/payment-success/:serviceId/:userID/:providerId/:date/:time/:address/:
     }
 
     const insertData = {
-        service_id: serviceId,
-        user_id: userID,
-        provider_id: providerId,
-        date,
-        time,
-        address,
-        notes,
-        status,
-        total_amount,
-        payment_method: paymentInfo.card_type,
-        payment_status
+        patient_id: patient_id,
+        department: department,
+        doctor_id: doctor_id,
+        appointment_date: appointment_date,
+        appointment_time: appointment_time,
+        patient_name: patient_name,
+        patient_phone: patient_phone,
+        patient_email: patient_email,
+        patient_age: parseInt(patient_age),
+        health_issues: health_issues,
+        payment_method: paymentInfo.payment_method,
+        payment_status: 'completed',
+        appointment_status: appointment_status,
+        fee: fee,
     };
 
 
     console.log(insertData);
     console.log(paymentInfo);
-    const { data, error } = await supabase.from('bookings').insert([insertData]);
+    const { data, error } = await supabase.from('appointments').insert([insertData]);
 
     if (error) {
       console.error('❌ DB Insert Error:', error);
