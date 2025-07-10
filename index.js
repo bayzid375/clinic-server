@@ -56,7 +56,7 @@ app.post('/api/pay', async (req, res) => {
       product_profile: 'non-physical-goods',
       cus_name:patient_name,
       cus_email: patient_email,
-      cus_add1: address,
+      cus_add1: 'N/A',
       cus_city: 'N/A',
       cus_postcode: 'N/A',
       cus_country: 'Bangladesh',
